@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="~{/layout/basic ::  setCOntent(~{this::content} )}">
+
+    <th:block th:fragment="content">
+
+        <h1 class="mt-4">GuestBook Modify Page</h1>
+
+        <form id="actionForm" action="/guestbook/modify" method="post">
+            <input type="hidden" name="page" th:value="${requestDTO.page}">
+            <input type="hidden" name="type" th:value="${requestDTO.type}">
+            <input type="hidden" name="keyword" th:value="${requestDTO.keyword}">
+        <div class="form-group">
+            <label>Gno</label>
+            <input type="text" class="form-control" name="gno" th:value="${dto.gno}" readonly>
+        </div>
+
+        <div class="form-group">
+            <label>Title</label>
+            <input type="text" class="form-control" name="title" th:value="${dto.title}" readonly>
+        </div>
+        <div class="form-group">
+            <label>Content</label>
+            <textarea class="form-control" rows="5" name="content" readonly>[[${dto.content}]]</textarea>
+        </div>
+        <div class="form-group">
+            <label>Writer</label>
+            <input type="text" class="form-control" name="writer" th:value="${dto.writer}" readonly>
+        </div>
+        <div class="form-group">
+            <label>RegDate</label>
+            <input type="text" class="form-control" name="regDate" th:value="${#temporals.format(dto.regDate,'yyyy/MM/dd HH:mm:ss')}" readonly>
+        </div>
+        <div class="form-group">
+            <label>ModDate</label>
+            <input type="text" class="form-control" name="modDate" th:value="${#temporals.format(dto.modDate,'yyyy/MM/dd HH:mm:ss')}" readonly>
+        </div>
+
+            <button type="button" class="btn btn-primary">Modify</button>
+
+            <button type="button" class="btn btn-info">List</button>
+
+            <button type="button" class="btn btn-danger">Remove</button>
+
+        </form>
+
+        <script>
+
+            var actionForm = $("#actionForm"); //form 태그 객체
+
+            $(".btn-remove").click(function() {
+                actionForm
+                    .attr("action", "/guestbook/remove")
+                    .attr("method", "post");
+
+                actionForm.submit();
+            });
+
+            $(".btn-modify").click(function() {
+
+                if(confirm("수정하시겠습니까?")) {
+                    actionForm.submit();
+                }
+            });
+
+            $(".btn-list").click(function() {
+
+                var pageInfo = $("input[name='page']", "input[name='type']", "input[name='keyword']");
+
+                actionForm.empty();
+                actionForm.append(pageInfo);
+                actionForm
+                    .attr("action", "/guestbook/list")
+                    .attr("method", "get");
+
+                console.log(actionForm.html());
+                actionForm.submit();
+            });
+
+            5
+
+
+        </script>
+
+    </th:block>
+
+</th:block>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+</html>
